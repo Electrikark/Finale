@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 public class Player {
     public String name;
     public String club;
@@ -21,11 +22,13 @@ public class Player {
         club = c;
         servingSkill= ss;
     }
-    public String Serve(){
+    public String Serve(int ss){
         double value;
         double calibrator;
         totalAttempts++;
-        if (this.servingSkill==1){ // float serve
+
+        accuracy = Math.round((successfulServes/(double)totalAttempts)*100)/100.0;
+        if (ss==1){ // float serve
             value = ((Math.random()*5)+3.0); // 3.0 - 9.0
             calibrator = (value/10.0)*100;
             if (calibrator>=50){
@@ -38,7 +41,7 @@ public class Player {
             }
 
         }
-        if (this.servingSkill==2){ // top spin
+        if (ss==2){ // top spin
             value = ((Math.random()*3)+3.0); // 3-6 
             calibrator = (value/10.0)*100;
             if (calibrator>=50){
@@ -50,7 +53,7 @@ public class Player {
                 return "Failed Serve!";
             }
         }
-        if (this.servingSkill==3){ // short serve
+        if (ss==3){ // short serve
             value= (Math.random()*3)+4.0;
             calibrator = (value/10.0)*100;
             if (calibrator>=50.0){
@@ -66,21 +69,50 @@ public class Player {
         else{
             return "";
         }
-
+        
     }
+    
+    public String Serve()
+    {
+        
+        return Serve(this.servingSkill);
+    }
+
+    public String Rank(){
+        if (totalAttempts==0){
+            return "";
+        }
+        if (accuracy<0.30){
+            return "Novice";
+        }
+        else if (accuracy<0.60){
+            return "Intermediate";
+        }
+        else if (accuracy<0.90){
+            return "Advanced";
+        }
+        else{
+            return "elite";
+        }
+    }
+
     public void viewStats(){
-        for (int i =0; i<22; i++){
+        
+        for (int i =0; i<25; i++){
             System.out.print("-");
         }
-        System.out.print("\n Statistics for "+ this.club + "'s player " + this.name + )
-        for (int i =0; i<22; i++){
+        System.out.print("\nStatistics for "+ this.club + "'s player " + this.name+"\n");
+        for (int i =0; i<25; i++){
             System.out.print("-");
         }
+        System.out.println("\n"+ "Player level: " + Rank()  );
+        System.out.println("Accuracy: " + accuracy*100 + "%");
     }
 
 
     public static void main(String[] args){
         Player player1 = new Player();
+        
         
     }
 }
