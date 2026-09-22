@@ -28,16 +28,19 @@ public class Player {
         totalAttempts++;
 
         accuracy = Math.round((successfulServes/(double)totalAttempts)*100)/100.0;
+        if(ss==0){
+            System.out.println(Serve());
+        }
         if (ss==1){ // float serve
             value = ((Math.random()*5)+3.0); // 3.0 - 9.0
             calibrator = (value/10.0)*100;
             if (calibrator>=50){
                 successfulServes++;
-                return "Successful Serve!";
+                return "Serving........ \nSuccessful Float!";
             }
             else{
                 failedServes++;
-                return "Failed Serve!";
+                return "Serving........ \nFailed Float!";
             }
 
         }
@@ -46,11 +49,11 @@ public class Player {
             calibrator = (value/10.0)*100;
             if (calibrator>=50){
                 successfulServes++;
-                return "Successful Serve!";
+                return "Serving........ \nSuccessful Top spin!";
             }
             else{
                 failedServes++;
-                return "Failed Serve!";
+                return "Serving........ \nFailed Top spin!";
             }
         }
         if (ss==3){ // short serve
@@ -58,11 +61,11 @@ public class Player {
             calibrator = (value/10.0)*100;
             if (calibrator>=50.0){
                 successfulServes++;
-                return "Successful Serve!";
+                return "Serving........ \nSuccessful short serve!!";
             }
             else{
                 failedServes++;
-                return "Failed Serve!";
+                return "Serving........ \nFailed short serve!";
             }
 
         }
