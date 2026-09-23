@@ -8,6 +8,8 @@ public class Player
     private int failedServes;
     private int totalAttempts;
 
+    private double personalBest;
+
     private static int numPlayers;
 
     // Default constructor
@@ -18,6 +20,7 @@ public class Player
         name = "Naman";
         club = "Bay-to-Bay";
         servingSkill = 1;
+        personalBest = 0.0;
     }
 
     // Overloaded constructor
@@ -26,8 +29,9 @@ public class Player
         numPlayers++;
 
         name = n;
-        servingSkill = ss;
         club = c;
+        servingSkill = ss;
+        personalBest = 0.0;
     }
 
     // Getters
@@ -59,6 +63,11 @@ public class Player
     public int getTotalAttempts()
     {
         return totalAttempts;
+    }
+
+    public double getPersonalBest()
+    {
+        return personalBest;
     }
 
     // Setters
@@ -95,13 +104,28 @@ public class Player
         return (double) successfulServes / totalAttempts;
     }
 
+    // Updates personal best if current accuracy is higher
+    public void updatePersonalBest()
+    {
+        if (calculateAccuracy() > personalBest)
+        {
+            personalBest = calculateAccuracy();
+        }
+    }
+
     // Performs a serve
     public String serve(int ss)
     {
-        // Natural serve uses the player's default skill
+        // Natural serve uses the player's default serving skill
         if (ss == 0)
         {
             ss = servingSkill;
+        }
+
+        // Handles invalid serve choices
+        if (ss < 1 || ss > 3)
+        {
+            return "Invalid serve option. Please choose 0, 1, 2, or 3.";
         }
 
         totalAttempts++;
@@ -141,7 +165,7 @@ public class Player
                 return "Serving........\nFailed Top Spin!";
             }
         }
-        else if (ss == 3)
+        else
         {
             value = (Math.random() * 3) + 4.0;
             calibrator = (value / 10.0) * 100;
@@ -157,11 +181,6 @@ public class Player
                 return "Serving........\nFailed Short Serve!";
             }
         }
-        else
-        {
-            totalAttempts--;
-            return "Invalid serve type.";
-        }
     }
 
     // Overloaded method
@@ -170,7 +189,7 @@ public class Player
         return serve(servingSkill);
     }
 
-    // Determines the player's rank
+    // Determines player's rank
     public String rank()
     {
         double accuracy = calculateAccuracy();
@@ -197,7 +216,6 @@ public class Player
         }
     }
 
-    // Displays player statistics
     public void viewStats()
     {
         for (int i = 0; i < 25; i++)
@@ -205,7 +223,8 @@ public class Player
             System.out.print("-");
         }
 
-        System.out.println("\nStatistics for " + club + "'s player " + name);
+        System.out.println("\nStatistics for " + club +
+                           "'s player " + name);
 
         for (int i = 0; i < 25; i++)
         {
@@ -216,6 +235,9 @@ public class Player
         System.out.println("Total attempts: " + totalAttempts);
         System.out.println("Successful serves: " + successfulServes);
         System.out.println("Failed serves: " + failedServes);
-        System.out.println("Accuracy: " + (calculateAccuracy() * 100) + "%");
+
+        System.out.printf("Accuracy: %.1f%%%n",calculateAccuracy() * 100);
+
+        System.out.printf("Personal Best: %.1f%%%n", personalBest * 100);
     }
 }

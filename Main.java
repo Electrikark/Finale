@@ -41,9 +41,12 @@ public class Main
 
                     int serveOption = input.nextInt();
 
-                    // Return value is actively evaluated
                     String result = obj.serve(serveOption);
                     System.out.println(result);
+
+                    // Display current accuracy after every serve
+                    System.out.printf("Current accuracy: %.1f%%%n",
+                                      obj.calculateAccuracy() * 100);
 
                     if (obj.calculateAccuracy() >= 0.50)
                     {
@@ -55,7 +58,13 @@ public class Main
                     }
                 }
 
+                obj.updatePersonalBest();
+
                 System.out.println("\nPractice round completed!");
+                System.out.printf("Practice accuracy: %.1f%%%n",
+                                  obj.calculateAccuracy() * 100);
+                System.out.printf("Personal best: %.1f%%%n",
+                                  obj.getPersonalBest() * 100);
             }
             else if (option == 2)
             {
@@ -63,7 +72,8 @@ public class Main
             }
             else if (option == 3)
             {
-                System.out.println("Personal Best feature coming soon!");
+                System.out.printf("\nPersonal Best: %.1f%%%n",
+                                  obj.getPersonalBest() * 100);
             }
             else if (option == 4)
             {
@@ -91,3 +101,5 @@ public class Main
         input.close();
     }
 }
+
+
