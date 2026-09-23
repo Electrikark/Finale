@@ -1,4 +1,3 @@
-// Volleyball serving simulator
 import java.util.Scanner;
 
 public class Main
@@ -18,8 +17,8 @@ public class Main
 
         while (!quit)
         {
-            System.out.println("\n1. Start practice");
-            System.out.println("2. View stats");
+            System.out.println("\n1. Start Practice");
+            System.out.println("2. View Stats");
             System.out.println("3. Personal Best");
             System.out.println("4. Quit");
 
@@ -28,11 +27,13 @@ public class Main
 
             if (option == 1)
             {
-                String serveDec = "yes";
+                System.out.println("\nStarting a practice round!");
+                System.out.println("You will attempt 10 serves.");
 
-                while (!serveDec.equalsIgnoreCase("no"))
+                // Definite count-based loop
+                for (int i = 1; i <= 10; i++)
                 {
-                    System.out.println("\nDo you wish to do:");
+                    System.out.println("\nServe " + i + " of 10");
                     System.out.println("Float [1]");
                     System.out.println("Top spin [2]");
                     System.out.println("Short serve [3]");
@@ -40,13 +41,21 @@ public class Main
 
                     int serveOption = input.nextInt();
 
-                    System.out.println(obj.Serve(serveOption));
+                    // Return value is actively evaluated
+                    String result = obj.serve(serveOption);
+                    System.out.println(result);
 
-                    input.nextLine();
-
-                    System.out.println("Do you wish to continue? (yes/no)");
-                    serveDec = input.nextLine();
+                    if (obj.calculateAccuracy() >= 0.50)
+                    {
+                        System.out.println("Your current accuracy is at least 50%!");
+                    }
+                    else
+                    {
+                        System.out.println("Keep practicing your accuracy!");
+                    }
                 }
+
+                System.out.println("\nPractice round completed!");
             }
             else if (option == 2)
             {
@@ -75,7 +84,6 @@ public class Main
         Player player1 = new Player();
 
         beginning();
-
         input.nextLine();
 
         start(player1, input);

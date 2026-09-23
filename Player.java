@@ -1,121 +1,221 @@
-import java.math.BigDecimal;
-public class Player {
-    public String name;
-    public String club;
-    private int servingSkill; // 1 = float - 2 = top spin - 3 = short - 
+public class Player
+{
+    private String name;
+    private String club;
+    private int servingSkill;
+
     private int successfulServes;
     private int failedServes;
     private int totalAttempts;
-    public double accuracy;
-    public boolean finished = false;
-    static int numPlayers;
-    public Player(){
+
+    private static int numPlayers;
+
+    // Default constructor
+    public Player()
+    {
         numPlayers++;
-        name="Naman";
+
+        name = "Naman";
         club = "Bay-to-Bay";
-        servingSkill=1;
-        
+        servingSkill = 1;
     }
-    public Player(String n, int ss, String c){
+
+    // Overloaded constructor
+    public Player(String n, int ss, String c)
+    {
         numPlayers++;
+
         name = n;
+        servingSkill = ss;
         club = c;
-        servingSkill= ss;
     }
-    public String Serve(int ss){
-        double value;
-        double calibrator;
+
+    // Getters
+    public String getName()
+    {
+        return name;
+    }
+
+    public String getClub()
+    {
+        return club;
+    }
+
+    public int getServingSkill()
+    {
+        return servingSkill;
+    }
+
+    public int getSuccessfulServes()
+    {
+        return successfulServes;
+    }
+
+    public int getFailedServes()
+    {
+        return failedServes;
+    }
+
+    public int getTotalAttempts()
+    {
+        return totalAttempts;
+    }
+
+    // Setters
+    public void setName(String n)
+    {
+        name = n;
+    }
+
+    public void setClub(String c)
+    {
+        club = c;
+    }
+
+    public void setServingSkill(int skill)
+    {
+        if (skill >= 1 && skill <= 3)
+        {
+            servingSkill = skill;
+        }
+        else
+        {
+            System.out.println("Invalid serving skill.");
+        }
+    }
+
+    // Calculates current serving accuracy
+    public double calculateAccuracy()
+    {
+        if (totalAttempts == 0)
+        {
+            return 0.0;
+        }
+
+        return (double) successfulServes / totalAttempts;
+    }
+
+    // Performs a serve
+    public String serve(int ss)
+    {
+        // Natural serve uses the player's default skill
+        if (ss == 0)
+        {
+            ss = servingSkill;
+        }
+
         totalAttempts++;
 
-        accuracy = Math.round((successfulServes/(double)totalAttempts)*100)/100.0;
-        if(ss==0){
-            System.out.println(Serve());
-        }
-        if (ss==1){ // float serve
-            value = ((Math.random()*5)+3.0); // 3.0 - 9.0
-            calibrator = (value/10.0)*100;
-            if (calibrator>=50){
-                successfulServes++;
-                return "Serving........ \nSuccessful Float!";
-            }
-            else{
-                failedServes++;
-                return "Serving........ \nFailed Float!";
-            }
+        double value;
+        double calibrator;
 
-        }
-        if (ss==2){ // top spin
-            value = ((Math.random()*3)+3.0); // 3-6 
-            calibrator = (value/10.0)*100;
-            if (calibrator>=50){
-                successfulServes++;
-                return "Serving........ \nSuccessful Top spin!";
-            }
-            else{
-                failedServes++;
-                return "Serving........ \nFailed Top spin!";
-            }
-        }
-        if (ss==3){ // short serve
-            value= (Math.random()*3)+4.0;
-            calibrator = (value/10.0)*100;
-            if (calibrator>=50.0){
-                successfulServes++;
-                return "Serving........ \nSuccessful short serve!!";
-            }
-            else{
-                failedServes++;
-                return "Serving........ \nFailed short serve!";
-            }
+        if (ss == 1)
+        {
+            value = (Math.random() * 5) + 3.0;
+            calibrator = (value / 10.0) * 100;
 
+            if (calibrator >= 50)
+            {
+                successfulServes++;
+                return "Serving........\nSuccessful Float!";
+            }
+            else
+            {
+                failedServes++;
+                return "Serving........\nFailed Float!";
+            }
         }
-        else{
-            return "";
+        else if (ss == 2)
+        {
+            value = (Math.random() * 3) + 3.0;
+            calibrator = (value / 10.0) * 100;
+
+            if (calibrator >= 50)
+            {
+                successfulServes++;
+                return "Serving........\nSuccessful Top Spin!";
+            }
+            else
+            {
+                failedServes++;
+                return "Serving........\nFailed Top Spin!";
+            }
         }
-        
+        else if (ss == 3)
+        {
+            value = (Math.random() * 3) + 4.0;
+            calibrator = (value / 10.0) * 100;
+
+            if (calibrator >= 50)
+            {
+                successfulServes++;
+                return "Serving........\nSuccessful Short Serve!";
+            }
+            else
+            {
+                failedServes++;
+                return "Serving........\nFailed Short Serve!";
+            }
+        }
+        else
+        {
+            totalAttempts--;
+            return "Invalid serve type.";
+        }
     }
-    
-    public String Serve()
+
+    // Overloaded method
+    public String serve()
     {
-        
-        return Serve(this.servingSkill);
+        return serve(servingSkill);
     }
 
-    public String Rank(){
-        if (totalAttempts==0){
-            return "";
+    // Determines the player's rank
+    public String rank()
+    {
+        double accuracy = calculateAccuracy();
+
+        if (totalAttempts == 0)
+        {
+            return "No rank yet";
         }
-        if (accuracy<0.30){
+        else if (accuracy < 0.30)
+        {
             return "Novice";
         }
-        else if (accuracy<0.60){
+        else if (accuracy < 0.60)
+        {
             return "Intermediate";
         }
-        else if (accuracy<0.90){
+        else if (accuracy < 0.90)
+        {
             return "Advanced";
         }
-        else{
-            return "elite";
+        else
+        {
+            return "Elite";
         }
     }
 
-    public void viewStats(){
-        
-        for (int i =0; i<25; i++){
+    // Displays player statistics
+    public void viewStats()
+    {
+        for (int i = 0; i < 25; i++)
+        {
             System.out.print("-");
         }
-        System.out.print("\nStatistics for "+ this.club + "'s player " + this.name+"\n");
-        for (int i =0; i<25; i++){
+
+        System.out.println("\nStatistics for " + club + "'s player " + name);
+
+        for (int i = 0; i < 25; i++)
+        {
             System.out.print("-");
         }
-        System.out.println("\n"+ "Player level: " + Rank()  );
-        System.out.println("Accuracy: " + accuracy*100 + "%");
-    }
 
-
-    public static void main(String[] args){
-        Player player1 = new Player();
-        
-        
+        System.out.println("\nPlayer level: " + rank());
+        System.out.println("Total attempts: " + totalAttempts);
+        System.out.println("Successful serves: " + successfulServes);
+        System.out.println("Failed serves: " + failedServes);
+        System.out.println("Accuracy: " + (calculateAccuracy() * 100) + "%");
     }
 }
